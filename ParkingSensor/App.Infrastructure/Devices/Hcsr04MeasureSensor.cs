@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
-using App.Core.Sensors;
-using App.Infrastructure.EventModels;
+using App.Core.Devices;
+using App.Core.EventModels;
 using Iot.Device.Hcsr04;
 
 namespace App.Infrastructure.Sensors
 {
-    // Docs: https://components101.com/sites/default/files/component_datasheet/HCSR04%20Datasheet.pdf
+    // Docs: https://github.com/dotnet/iot/tree/master/src/devices/Hcsr04
     public class Hcsr04Sensor : IMeasureSensor<DistanceMeasuredEventArgs>
     {
         private static readonly TimeSpan MinimalInterval = TimeSpan.FromMilliseconds(60);

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace App.Infrastructure.EventModels
+namespace App.Core.EventModels
 {
     public class DistanceMeasuredEventArgs : EventArgs
     {

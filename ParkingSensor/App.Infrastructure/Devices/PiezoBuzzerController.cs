@@ -1,9 +1,10 @@
-﻿using App.Core.Sensors;
+﻿using System;
+using App.Core.Devices;
 using Iot.Device.Buzzer;
-using System;
 
 namespace App.Infrastructure.Sensors
 {
+    // Docs: https://github.com/dotnet/iot/blob/master/src/devices/Buzzer/README.md
     public class PiezoBuzzerController : IBuzzer
     {
         private const int ForceSoftwarePWM = -1;

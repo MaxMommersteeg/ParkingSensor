@@ -1,5 +1,6 @@
-﻿using App.Infrastructure.Sensors;
-using System;
+﻿using System;
+using App.Core.EventModels;
+using App.Infrastructure.Sensors;
 
 namespace App
 {
@@ -12,7 +13,7 @@ namespace App
             sensor.ValueMeasured += OnSensorValueMeasured;
         }
 
-        private static void OnSensorValueMeasured(object sender, Infrastructure.EventModels.DistanceMeasuredEventArgs e)
+        private static void OnSensorValueMeasured(object sender, DistanceMeasuredEventArgs e)
         {
         }
     }
