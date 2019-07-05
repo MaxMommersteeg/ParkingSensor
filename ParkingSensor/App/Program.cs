@@ -1,5 +1,6 @@
 ﻿using System;
-using App.Core.EventModels;
+using App.Core;
+using App.Core.DomainServices;
 using App.Infrastructure.Sensors;
 
 namespace App
@@ -9,12 +10,17 @@ namespace App
         public static void Main()
         {
             Console.WriteLine("Started Parking Sensor app.");
-            var sensor = new Hcsr04Sensor(14, 2);
-            sensor.ValueMeasured += OnSensorValueMeasured;
-        }
+            var distanceToToneFrequencyConverter = new DistanceToToneFrequencyConverter();
+            var distanceSensor = new Hcsr04Sensor(23, 24);
+            var buzzer = new PiezoBuzzerController(17);
+            var parkingSensorService = new ParkingSensorService(
+                distanceToToneFrequencyConverter,
+                distanceSensor,
+                buzzer);
 
-        private static void OnSensorValueMeasured(object sender, DistanceMeasuredEventArgs e)
-        {
+            parkingSensorService.Start();
+
+            Console.ReadKey();
         }
     }
 }

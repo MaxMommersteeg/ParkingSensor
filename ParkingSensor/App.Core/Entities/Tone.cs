@@ -1,6 +1,6 @@
-﻿namespace App.Core.Domain
+﻿namespace App.Core.Entities
 {
-    internal enum Tone
+    public enum Tone
     {
         None,
         Lowest,

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using App.Core.Domain;
+using App.Core.Entities;
 
 namespace App.Core.Helpers
 {

@@ -2,9 +2,7 @@
 
 namespace App.Core.Devices
 {
-    public interface IMeasureSensor<T>: IDevice
-        where T : class
+    public interface IMeasureSensor: IDevice
     {
-        event EventHandler<T> ValueMeasured;
     }
 }

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading;
 using App.Core.Devices;
+using App.Core.Entities;
 using App.Core.EventModels;
 using Iot.Device.Hcsr04;
 
 namespace App.Infrastructure.Sensors
 {
     // Docs: https://github.com/dotnet/iot/tree/master/src/devices/Hcsr04
-    public class Hcsr04Sensor : IMeasureSensor<DistanceMeasuredEventArgs>
+    public class Hcsr04Sensor : IMeasureSensor
     {
         private static readonly TimeSpan MinimalInterval = TimeSpan.FromMilliseconds(60);
 
@@ -22,10 +23,10 @@ namespace App.Infrastructure.Sensors
             _timer = new Timer(OnIntervalElapsed, null, TimeSpan.Zero, _measureInterval);
         }
 
-        public event EventHandler<DistanceMeasuredEventArgs> ValueMeasured;
         private void OnDistanceMeasured(DistanceMeasuredEventArgs distanceMeasuredEventArgs)
         {
-            ValueMeasured?.Invoke(this, distanceMeasuredEventArgs);
+            var distanceMeasurement = new DistanceMeasurement(distanceMeasuredEventArgs.Distance);
+            distanceMeasurement.MarkMeasured();
         }
 
         private void OnIntervalElapsed(object state)

@@ -1,4 +1,4 @@
-﻿using App.Core.Domain;
+﻿using App.Core.Entities;
 using App.Core.Helpers;
 
 namespace App.Core

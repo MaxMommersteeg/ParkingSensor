@@ -1,49 +1,51 @@
 ﻿using App.Core.Devices;
-using App.Core.EventModels;
+using App.Core.Events;
+using App.Core.Interfaces;
 using System;
 
 namespace App.Core.DomainServices
 {
-    public class ParkingSensorService : IParkingSensorService
+    public class ParkingSensorService : 
+        IHandle<DistanceMeasured>,
+        IParkingSensorService
     {
         private static readonly TimeSpan ToneDuration = TimeSpan.FromMilliseconds(50);
 
         private readonly IDistanceToToneFrequencyConverter _distanceToToneFrequencyConverter;
-        private readonly IMeasureSensor<DistanceMeasuredEventArgs> _measureSensor;
+        private readonly IMeasureSensor _measureSensor;
         private readonly IBuzzer _buzzer;
-
-        private bool _started;
 
         public ParkingSensorService(
             IDistanceToToneFrequencyConverter distanceToToneFrequencyConverter,
-            IMeasureSensor<DistanceMeasuredEventArgs> measureSensor,
+            IMeasureSensor measureSensor,
             IBuzzer buzzer)
         {
             _distanceToToneFrequencyConverter = distanceToToneFrequencyConverter;
             _measureSensor = measureSensor;
             _buzzer = buzzer;
-
-            _measureSensor.ValueMeasured += OnSensorValueMeasured;
         }
 
-        private void OnSensorValueMeasured(object sender, DistanceMeasuredEventArgs e)
+        public void Handle(DistanceMeasured @event)
         {
-            var frequencyToPlay = _distanceToToneFrequencyConverter.DistanceToFrequency(e.Distance);
+            if (!Started)
+            {
+                return;
+            }
+
+            var frequencyToPlay = _distanceToToneFrequencyConverter.DistanceToFrequency(@event.DistanceMeasurement.Distance);
             _buzzer.PlayTone(frequencyToPlay, ToneDuration);
         }
 
-        public bool Started => _started;
+        public bool Started { get; private set; }
 
         public void Start()
         {
-            _measureSensor.ValueMeasured += OnSensorValueMeasured;
-            _started = true;
+            Started = true;
         }
 
         public void Stop()
         {
-            _measureSensor.ValueMeasured -= OnSensorValueMeasured;
-            _started = false;
+            Started = false;
         }
 
         public void Dispose()
