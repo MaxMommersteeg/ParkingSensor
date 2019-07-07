@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
-using App.Core;
 using App.Core.Devices;
 using App.Core.DomainServices;
-using App.Core.Entities;
-using App.Core.Interfaces;
-using App.Core.SharedKernel;
-using App.Infrastructure.DomainEvents;
+using App.Core.Messages.Commands;
+using App.Core.Messages.Events;
 using App.Infrastructure.Sensors;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace App
@@ -26,14 +21,9 @@ namespace App
             // Setup dependency injection.
             RegisterServices();
 
-            var distanceToToneFrequencyConverter = _serviceProvider.GetService<IDistanceToToneFrequencyConverter>();
-            var distanceMeasurement = new DistanceMeasurement(15);
-            distanceMeasurement.MarkMeasured();
-
-            var dispatcher = _serviceProvider.GetService<IDomainEventDispatcher>();
-            dispatcher.Dispatch(distanceMeasurement.Events.First());
-
-            Console.ReadKey();
+            var messagingMediator = _serviceProvider.GetService<IMediator>();
+            messagingMediator.Send(new StartDistanceMeasuringService(23, 24));
+            messagingMediator.Send(new StartParkingService());
 
             using (var distanceSensor = _serviceProvider.GetService<IMeasureSensor>())
             using (var buzzer = _serviceProvider.GetService<IBuzzer>())
@@ -59,31 +49,24 @@ namespace App
         public static void RegisterServices()
         {
             var collection = new ServiceCollection();
-            collection.AddSingleton<IMeasureSensor>(x =>
-            {
-                var dispatcher = _serviceProvider.GetService<IDomainEventDispatcher>();
-                return new Hcsr04Sensor(dispatcher, 23, 24);
-            });
+
+            var coreAssembly = Assembly.GetAssembly(typeof(BaseEvent));
+            collection.AddMediatR(coreAssembly);
+
             collection.AddSingleton<IBuzzer>(x =>
             {
                 return new PiezoBuzzerController(17);
             });
 
-            collection.AddSingleton<IParkingSensorService>(x => {
-                var converter = _serviceProvider.GetService<IDistanceToToneFrequencyConverter>();
-                return new ParkingSensorService(converter);
+            collection.AddSingleton<IMeasureSensor>(x =>
+            {
+                var messagingMediator = _serviceProvider.GetService<IMediator>();
+                return new Hcsr04Sensor(messagingMediator, 23, 24);
             });
 
-            var builder = new ContainerBuilder();
+            collection.AddSingleton<IParkingSensorService, ParkingSensorService>();
 
-            builder.Populate(collection);
-
-            var coreAssembly = Assembly.GetAssembly(typeof(BaseEntity));
-            var infrastructureAssembly = Assembly.GetAssembly(typeof(DomainEventDispatcher));
-            builder.RegisterAssemblyTypes(coreAssembly, infrastructureAssembly).AsImplementedInterfaces();
-
-            var appContainer = builder.Build();
-            _serviceProvider = new AutofacServiceProvider(appContainer);
+            _serviceProvider = collection.BuildServiceProvider();
         }
 
         private static void DisposeServices()
@@ -100,3 +83,4 @@ namespace App
         }
     }
 }
+;

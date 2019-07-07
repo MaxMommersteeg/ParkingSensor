@@ -1,11 +1,7 @@
 ﻿namespace App.Core.DomainServices
 {
-    public interface IParkingSensorService : IService
+    public interface IParkingSensorService
     {
         bool Started { get; }
-
-        void Start();
-
-        void Stop();
     }
 }

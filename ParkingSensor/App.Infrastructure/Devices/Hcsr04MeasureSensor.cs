@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading;
 using App.Core.Devices;
-using App.Core.Entities;
-using App.Core.EventModels;
-using App.Core.Interfaces;
+using App.Core.Messages.Events;
 using Iot.Device.Hcsr04;
+using MediatR;
 
 namespace App.Infrastructure.Sensors
 {
@@ -13,15 +12,15 @@ namespace App.Infrastructure.Sensors
     {
         private static readonly TimeSpan MinimalInterval = TimeSpan.FromMilliseconds(60);
 
-        private readonly IDomainEventDispatcher _dispatcher;
+        private readonly IMediator _messagingMediator;
         private readonly Hcsr04 _sensor;
         private readonly TimeSpan _measureInterval;
 
         private Timer _timer;
 
-        public Hcsr04Sensor(IDomainEventDispatcher dispatcher, int triggerPin, int echoPin, TimeSpan? measureInterval = null)
+        public Hcsr04Sensor(IMediator messagingMediator, int triggerPin, int echoPin, TimeSpan? measureInterval = null)
         {
-            _dispatcher = dispatcher;
+            _messagingMediator = messagingMediator;
             _sensor = new Hcsr04(triggerPin, echoPin);
             _measureInterval = GetValueOrMinimalInterval(measureInterval);
         }
@@ -31,21 +30,10 @@ namespace App.Infrastructure.Sensors
             _timer = new Timer(OnIntervalElapsed, null, TimeSpan.Zero, _measureInterval);
         }
 
-        private void OnDistanceMeasured(DistanceMeasuredEventArgs distanceMeasuredEventArgs)
-        {
-            var distanceMeasurement = new DistanceMeasurement(distanceMeasuredEventArgs.Distance);
-            distanceMeasurement.MarkMeasured();
-
-            foreach (var @event in distanceMeasurement.Events)
-            {
-                _dispatcher.Dispatch(@event);
-            }
-        }
-
         private void OnIntervalElapsed(object state)
         {
-            var distanceMeasuredEventArgs = new DistanceMeasuredEventArgs(_sensor.Distance);
-            OnDistanceMeasured(distanceMeasuredEventArgs);
+            var distance = _sensor.Distance;
+            _messagingMediator.Publish(new DistanceMeasured(distance));
         }
 
         private TimeSpan GetValueOrMinimalInterval(TimeSpan? timeSpan)

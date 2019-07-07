@@ -1,8 +1,9 @@
 ﻿using System;
+using MediatR;
 
-namespace App.Core.SharedKernel
+namespace App.Core.Messages.Events
 {
-    public abstract class BaseDomainEvent
+    public abstract class BaseEvent : INotification
     {
         public DateTime Timestamp { get; protected set; } = DateTime.UtcNow;
     }
