@@ -4,5 +4,6 @@ namespace App.Core.Devices
 {
     public interface IMeasureSensor: IDevice
     {
+        void Start();
     }
 }
