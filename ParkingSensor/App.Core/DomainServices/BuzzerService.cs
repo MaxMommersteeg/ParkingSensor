@@ -13,7 +13,9 @@ namespace App.Core.DomainServices
         private readonly ILogger _logger;
         private readonly IBuzzer _buzzer;
 
-        public BuzzerService(ILogger<BuzzerService> logger, IBuzzer buzzer)
+        public BuzzerService(
+            ILogger<BuzzerService> logger,
+            IBuzzer buzzer)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _buzzer = buzzer ?? throw new ArgumentNullException(nameof(buzzer));
