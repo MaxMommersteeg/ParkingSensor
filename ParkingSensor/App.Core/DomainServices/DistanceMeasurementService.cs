@@ -66,12 +66,12 @@ namespace App.Core.DomainServices
         {
             var distance = _measureSensor.GetDistance();
 
-            _logger.LogInformation($"Measured distance. {distance}cm");
+            _logger.LogDebug($"Measured distance. {distance}cm");
 
             var @event = new DistanceMeasured(distance);
             _messagingMediator.Publish(@event);
 
-            _logger.LogInformation($"Published {@event.GetType()} event.");
+            _logger.LogDebug($"Published {@event.GetType()} event.");
         }
 
         private TimeSpan GetValueOrMinimalInterval(TimeSpan? timeSpan)
