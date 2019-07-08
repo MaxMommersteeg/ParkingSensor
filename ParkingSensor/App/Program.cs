@@ -5,7 +5,7 @@ using App.Core.Devices;
 using App.Core.DomainServices;
 using App.Core.Messages.Commands;
 using App.Core.Messages.Events;
-using App.Fakes;
+using App.Infrastructure.Devices;
 using App.Infrastructure.Sensors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,18 +43,17 @@ namespace App
 
             collection.AddSingleton<IBuzzer>(x =>
             {
-                return new FakeBuzzer();
-//#if DEBUG
-//                return new FakeBuzzer();
-//#else
-//                return new PiezoBuzzerController(17);
-//#endif
+#if DEBUG
+                return new SimulatedBuzzer();
+#else
+                return new PiezoBuzzerController(17);
+#endif
             });
 
             collection.AddSingleton<IMeasureSensor>(x =>
             {
 #if DEBUG
-                return new FakeMeasureSensor();
+                return new SimulatedMeasureSensor();
 #else
                 return new Hcsr04Sensor(23, 24);
 #endif

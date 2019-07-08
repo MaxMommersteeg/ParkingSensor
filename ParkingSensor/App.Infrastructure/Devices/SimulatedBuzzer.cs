@@ -1,24 +1,25 @@
 ﻿using System;
 using App.Core.Devices;
 
-namespace App.Fakes
+namespace App.Infrastructure.Devices
 {
-    public class FakeBuzzer : IBuzzer
+    public class SimulatedBuzzer : IBuzzer
     {
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
         public void PlayTone(double frequency, TimeSpan duration)
         {
         }
 
         public void StartPlaying(double frequency)
         {
+            
         }
 
         public void StopPlaying()
+        {
+            
+        }
+
+        public void Dispose()
         {
         }
     }
