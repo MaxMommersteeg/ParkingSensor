@@ -43,11 +43,12 @@ namespace App
 
             collection.AddSingleton<IBuzzer>(x =>
             {
-#if DEBUG
                 return new FakeBuzzer();
-#else
-                return new PiezoBuzzerController(17);
-#endif
+//#if DEBUG
+//                return new FakeBuzzer();
+//#else
+//                return new PiezoBuzzerController(17);
+//#endif
             });
 
             collection.AddSingleton<IMeasureSensor>(x =>
