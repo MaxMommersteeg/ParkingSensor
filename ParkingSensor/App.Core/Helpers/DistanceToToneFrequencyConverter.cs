@@ -20,39 +20,39 @@ namespace App.Core
             return _toneFrequencies[tone];
         }
 
-        public double DistanceToFrequency(double distanceInCentimeter)
+        public double DistanceToFrequency(double distanceInCentimeters)
         {
-            if (distanceInCentimeter >= 140)
+            if (distanceInCentimeters >= 140)
             {
                 return GetFrequency(Tone.None);
             }
 
-            if (distanceInCentimeter >= 120 && distanceInCentimeter < 140)
+            if (distanceInCentimeters >= 120 && distanceInCentimeters < 140)
             {
                 return GetFrequency(Tone.Lowest);
             }
 
-            if (distanceInCentimeter >= 110 && distanceInCentimeter < 120)
+            if (distanceInCentimeters >= 110 && distanceInCentimeters < 120)
             {
                 return GetFrequency(Tone.Low);
             }
 
-            if (distanceInCentimeter >= 100 && distanceInCentimeter < 110)
+            if (distanceInCentimeters >= 100 && distanceInCentimeters < 110)
             {
                 return GetFrequency(Tone.Low);
             }
 
-            if (distanceInCentimeter >= 90 && distanceInCentimeter < 100)
+            if (distanceInCentimeters >= 90 && distanceInCentimeters < 100)
             {
                 return GetFrequency(Tone.Medium);
             }
 
-            if (distanceInCentimeter >= 80 && distanceInCentimeter < 90)
+            if (distanceInCentimeters >= 80 && distanceInCentimeters < 90)
             {
                 return GetFrequency(Tone.Higher);
             }
 
-            if (distanceInCentimeter >= 70 && distanceInCentimeter < 80)
+            if (distanceInCentimeters >= 70 && distanceInCentimeters < 80)
             {
                 return GetFrequency(Tone.Higher);
             }

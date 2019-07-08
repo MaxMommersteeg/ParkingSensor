@@ -2,6 +2,6 @@
 {
     public interface IDistanceToToneFrequencyConverter
     {
-        double DistanceToFrequency(double distanceInCentimeter);
+        double DistanceToFrequency(double distanceInCentimeters);
     }
 }
