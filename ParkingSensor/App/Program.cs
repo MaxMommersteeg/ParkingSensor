@@ -35,7 +35,7 @@ namespace App
             DisposeServices();
         }
 
-        public static void RegisterServices()
+        private static void RegisterServices()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -44,33 +44,36 @@ namespace App
             var configuration = builder.Build();
 
             var collection = new ServiceCollection();
-            collection.AddLogging(configure => configure.AddConsole());
+            collection.AddLogging(configure => {
+                configure.AddConsole();
+                configure.AddConfiguration(configuration.GetSection("Logging"));
+            });
 
             var coreAssembly = Assembly.GetAssembly(typeof(BaseEvent));
             collection.AddMediatR(coreAssembly);
 
-            var sensorsConfig = configuration.GetSection("sensors");
+            var sensorsConfig = configuration.GetSection("Sensors");
 
             collection.AddSingleton<IBuzzer>(x =>
             {
-                var piezoBuzzerConfig = sensorsConfig.GetSection("piezoBuzzer");
-                if (piezoBuzzerConfig.GetValue("useSimluated", defaultValue: false))
+                var piezoBuzzerConfig = sensorsConfig.GetSection("PiezoBuzzer");
+                if (piezoBuzzerConfig.GetValue("UseSimulated", defaultValue: false))
                 {
                     return new SimulatedBuzzer();
                 }
 
-                return new PiezoBuzzerController(piezoBuzzerConfig.GetValue<int>("pinNumber"));
+                return new PiezoBuzzerController(piezoBuzzerConfig.GetValue<int>("PinNumber"));
             });
 
             collection.AddSingleton<IMeasureSensor>(x =>
             {
-                var hcSr04Config = sensorsConfig.GetSection("hcSr04");
-                if (hcSr04Config.GetValue("useSimluated", defaultValue: false))
+                var hcSr04Config = sensorsConfig.GetSection("HcSr04");
+                if (hcSr04Config.GetValue("UseSimulated", defaultValue: false))
                 {
                     return new SimulatedMeasureSensor();
                 }
 
-                return new Hcsr04Sensor(hcSr04Config.GetValue<int>("triggerPin"), hcSr04Config.GetValue<int>("echoPin"));
+                return new Hcsr04Sensor(hcSr04Config.GetValue<int>("TriggerPin"), hcSr04Config.GetValue<int>("EchoPin"));
             });
 
             collection.AddSingleton<IDistanceToToneFrequencyConverter, DistanceToToneFrequencyConverter>();
@@ -79,7 +82,7 @@ namespace App
             collection.AddScoped<IParkingSensorService, ParkingSensorService>();
 
             _serviceProvider = collection.BuildServiceProvider();
-        }
+        }        
 
         private static void DisposeServices()
         {

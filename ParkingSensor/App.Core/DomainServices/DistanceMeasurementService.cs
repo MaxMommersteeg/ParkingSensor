@@ -33,26 +33,26 @@ namespace App.Core.DomainServices
 
         public Task<Unit> Handle(StartDistanceMeasurement request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Received {request.GetType()} command.");
+            _logger.LogDebug($"Received {request.GetType()} command.");
 
             Console.WriteLine($"({nameof(DistanceMeasurementService)}) Started distance measurement service.");
 
             Started = true;
             _timer = new Timer(OnIntervalElapsed, null, TimeSpan.Zero, GetValueOrMinimalInterval(request.MeasureInterval));
 
-            _logger.LogInformation($"Started distance measuring.");
+            _logger.LogDebug($"Started distance measuring.");
 
             return Unit.Task;
         }
 
         public Task<Unit> Handle(StopDistanceMeasurement request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Received {request.GetType()} command.");
+            _logger.LogDebug($"Received {request.GetType()} command.");
 
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
             Started = false;
 
-            _logger.LogInformation($"Stopped distance measuring.");
+            _logger.LogDebug($"Stopped distance measuring.");
 
             return Unit.Task;
         }
