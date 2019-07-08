@@ -4,61 +4,41 @@ using System.Threading.Tasks;
 using App.Core.Messages.Commands;
 using App.Core.Messages.Events;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace App.Core.DomainServices
 {
-    public class ParkingSensorService :
-        IRequestHandler<StartParkingService>,
-        IRequestHandler<StopParkingService>,
-        INotificationHandler<DistanceMeasured>,
-        IParkingSensorService
+    public class ParkingSensorService : IParkingSensorService
     {
         private static readonly TimeSpan ToneDuration = TimeSpan.FromMilliseconds(50);
 
+        private readonly ILogger _logger;
         private readonly IMediator _messagingMediator;
         private readonly IDistanceToToneFrequencyConverter _distanceToToneFrequencyConverter;
 
         public ParkingSensorService(
+            ILogger<ParkingSensorService> logger,
             IMediator messagingMediator,
             IDistanceToToneFrequencyConverter distanceToToneFrequencyConverter)
         {
-            _messagingMediator = messagingMediator;
-            _distanceToToneFrequencyConverter = distanceToToneFrequencyConverter;
-        }
-
-        public Task<Unit> Handle(StartParkingService request, CancellationToken cancellationToken)
-        {
-            Start();
-            return Unit.Task;
-        }
-
-        public Task<Unit> Handle(StopParkingService request, CancellationToken cancellationToken)
-        {
-            Stop();
-            return Unit.Task;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _messagingMediator = messagingMediator ?? throw new ArgumentNullException(nameof(messagingMediator));
+            _distanceToToneFrequencyConverter = distanceToToneFrequencyConverter ?? throw new ArgumentNullException(nameof(distanceToToneFrequencyConverter));
         }
 
         public Task Handle(DistanceMeasured distanceMeasured, CancellationToken cancellationToken)
         {
-            if (!Started)
-            {
-                return Task.CompletedTask;
-            }
+            _logger.LogInformation($"Received {distanceMeasured.GetType()} event.");
+
+            Console.WriteLine($"({nameof(ParkingSensorService)}) Received distance measured.");
 
             var frequencyToPlay = _distanceToToneFrequencyConverter.DistanceToFrequency(distanceMeasured.Distance);
-            return _messagingMediator.Send(new PlayTone(frequencyToPlay, ToneDuration));
-        }
+            var command = new PlayTone(frequencyToPlay, ToneDuration);
+            _messagingMediator.Send(command);
 
-        public bool Started { get; private set; }
+            _logger.LogInformation($"Sent {command.GetType()} command.");
 
-        private void Start()
-        {
-            Started = true;
-        }
-
-        private void Stop()
-        {
-            Started = false;
+            return Unit.Task;
         }
     }
 }

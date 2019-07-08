@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Reflection;
+using App.Core;
 using App.Core.Devices;
 using App.Core.DomainServices;
 using App.Core.Messages.Commands;
 using App.Core.Messages.Events;
+using App.Fakes;
 using App.Infrastructure.Sensors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace App
 {
@@ -22,25 +25,9 @@ namespace App
             RegisterServices();
 
             var messagingMediator = _serviceProvider.GetService<IMediator>();
-            messagingMediator.Send(new StartDistanceMeasuringService(23, 24));
-            messagingMediator.Send(new StartParkingService());
+            messagingMediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(5)));
 
-            using (var distanceSensor = _serviceProvider.GetService<IMeasureSensor>())
-            using (var buzzer = _serviceProvider.GetService<IBuzzer>())
-            using (var parkingSensorService = new ParkingSensorService(distanceToToneFrequencyConverter))
-            {
-                Console.WriteLine("All services initialized.");
-
-                distanceSensor.Start();
-
-                Console.WriteLine("Started distance sensor.");
-
-                parkingSensorService.Start();
-
-                Console.WriteLine("Started parking sensor service.");
-
-                Console.ReadKey();
-            }
+            Console.ReadKey();
 
             // Cleanup.
             DisposeServices();
@@ -49,22 +36,33 @@ namespace App
         public static void RegisterServices()
         {
             var collection = new ServiceCollection();
+            collection.AddLogging(configure => configure.AddConsole());
 
             var coreAssembly = Assembly.GetAssembly(typeof(BaseEvent));
             collection.AddMediatR(coreAssembly);
 
             collection.AddSingleton<IBuzzer>(x =>
             {
+#if DEBUG
+                return new FakeBuzzer();
+#else
                 return new PiezoBuzzerController(17);
+#endif
             });
 
             collection.AddSingleton<IMeasureSensor>(x =>
             {
-                var messagingMediator = _serviceProvider.GetService<IMediator>();
-                return new Hcsr04Sensor(messagingMediator, 23, 24);
+#if DEBUG
+                return new FakeMeasureSensor();
+#else
+                return new Hcsr04Sensor(23, 24);
+#endif
             });
 
-            collection.AddSingleton<IParkingSensorService, ParkingSensorService>();
+            collection.AddSingleton<IDistanceToToneFrequencyConverter, DistanceToToneFrequencyConverter>();
+            collection.AddScoped<IDistanceMeasurementService, DistanceMeasurementService>();
+            collection.AddScoped<IBuzzerService, BuzzerService>();
+            collection.AddScoped<IParkingSensorService, ParkingSensorService>();
 
             _serviceProvider = collection.BuildServiceProvider();
         }

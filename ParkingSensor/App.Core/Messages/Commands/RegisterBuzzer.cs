@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace App.Core.Messages.Commands
+﻿namespace App.Core.Messages.Commands
 {
     public class RegisterBuzzer : BaseCommand
     {
-        public RegisterBuzzer()
+        public RegisterBuzzer(int pinNumber)
         {
-
+            PinNumber = pinNumber;
         }
 
-        public int 
+        public int PinNumber { get; }
     }
 }
