@@ -67,7 +67,7 @@ namespace App.Core.DomainServices
             _logger.LogDebug($"Measured distance. {distance}cm");
 
             var @event = new DistanceMeasured(distance);
-            _messagingMediator.Publish(@event);
+            Task.Run(async() => await _messagingMediator.Publish(@event));
 
             _logger.LogDebug($"Published {@event} event.");
         }

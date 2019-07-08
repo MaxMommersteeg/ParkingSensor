@@ -26,17 +26,15 @@ namespace App.Core.DomainServices
             _distanceToToneFrequencyConverter = distanceToToneFrequencyConverter ?? throw new ArgumentNullException(nameof(distanceToToneFrequencyConverter));
         }
 
-        public Task Handle(DistanceMeasured distanceMeasured, CancellationToken cancellationToken)
+        public async Task Handle(DistanceMeasured distanceMeasured, CancellationToken cancellationToken)
         {
             _logger.LogDebug($"Received {distanceMeasured} event.");
 
             var frequencyToPlay = _distanceToToneFrequencyConverter.DistanceToFrequency(distanceMeasured.Distance);
             var command = new PlayTone(frequencyToPlay, ToneDuration);
-            _messagingMediator.Send(command);
+            await _messagingMediator.Send(command);
 
             _logger.LogDebug($"Sent {command} command.");
-
-            return Unit.Task;
         }
     }
 }

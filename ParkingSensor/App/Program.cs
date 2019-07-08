@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using App.Core;
 using App.Core.Devices;
 using App.Core.DomainServices;
@@ -19,7 +20,7 @@ namespace App
     {
         private static IServiceProvider _serviceProvider;
 
-        public static void Main()
+        public static async Task Main()
         {
             Console.WriteLine("Started Parking Sensor app.");
 
@@ -27,7 +28,7 @@ namespace App
             RegisterServices();
 
             var messagingMediator = _serviceProvider.GetService<IMediator>();
-            messagingMediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(5)));
+            await messagingMediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(5)));
 
             Console.ReadKey();
 
