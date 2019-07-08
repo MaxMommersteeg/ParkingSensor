@@ -28,13 +28,13 @@ namespace App.Core.DomainServices
 
         public Task Handle(DistanceMeasured distanceMeasured, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"Received {distanceMeasured.GetType()} event.");
+            _logger.LogDebug($"Received {distanceMeasured} event.");
 
             var frequencyToPlay = _distanceToToneFrequencyConverter.DistanceToFrequency(distanceMeasured.Distance);
             var command = new PlayTone(frequencyToPlay, ToneDuration);
             _messagingMediator.Send(command);
 
-            _logger.LogDebug($"Sent {command.GetType()} command.");
+            _logger.LogDebug($"Sent {command} command.");
 
             return Unit.Task;
         }

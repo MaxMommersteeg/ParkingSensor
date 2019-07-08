@@ -33,26 +33,24 @@ namespace App.Core.DomainServices
 
         public Task<Unit> Handle(StartDistanceMeasurement request, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"Received {request.GetType()} command.");
-
-            Console.WriteLine($"({nameof(DistanceMeasurementService)}) Started distance measurement service.");
+            _logger.LogDebug($"Received {request} command.");
 
             Started = true;
             _timer = new Timer(OnIntervalElapsed, null, TimeSpan.Zero, GetValueOrMinimalInterval(request.MeasureInterval));
 
-            _logger.LogDebug($"Started distance measuring.");
+            _logger.LogInformation($"Started distance measurement.");
 
             return Unit.Task;
         }
 
         public Task<Unit> Handle(StopDistanceMeasurement request, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"Received {request.GetType()} command.");
+            _logger.LogDebug($"Received {request} command.");
 
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
             Started = false;
 
-            _logger.LogDebug($"Stopped distance measuring.");
+            _logger.LogInformation($"Stopped distance measuring.");
 
             return Unit.Task;
         }
@@ -71,7 +69,7 @@ namespace App.Core.DomainServices
             var @event = new DistanceMeasured(distance);
             _messagingMediator.Publish(@event);
 
-            _logger.LogDebug($"Published {@event.GetType()} event.");
+            _logger.LogDebug($"Published {@event} event.");
         }
 
         private TimeSpan GetValueOrMinimalInterval(TimeSpan? timeSpan)

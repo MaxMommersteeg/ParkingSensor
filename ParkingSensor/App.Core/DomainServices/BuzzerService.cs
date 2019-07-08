@@ -23,11 +23,11 @@ namespace App.Core.DomainServices
 
         public Task<Unit> Handle(PlayTone request, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"Received {request.GetType()} command.");
+            _logger.LogDebug($"Received {request} command.");
 
             _buzzer.PlayTone(request.Frequency, request.Duration);
 
-            _logger.LogDebug($"Played tone.");
+            _logger.LogInformation($"Played tone.");
 
             return Unit.Task;
         }
