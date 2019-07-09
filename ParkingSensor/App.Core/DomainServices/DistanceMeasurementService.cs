@@ -64,7 +64,7 @@ namespace App.Core.DomainServices
         {
             var distance = _measureSensor.GetDistance();
 
-            _logger.LogDebug($"Measured distance. {distance}cm");
+            _logger.LogInformation($"Measured distance. {distance}cm");
 
             var @event = new DistanceMeasured(distance);
             Task.Run(async() => await _messagingMediator.Publish(@event));
