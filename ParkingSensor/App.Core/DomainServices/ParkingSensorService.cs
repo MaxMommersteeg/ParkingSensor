@@ -10,7 +10,7 @@ namespace App.Core.DomainServices
 {
     public class ParkingSensorService : IParkingSensorService
     {
-        private static readonly TimeSpan ToneDuration = TimeSpan.FromMilliseconds(50);
+        private static readonly TimeSpan ToneDuration = TimeSpan.FromSeconds(3);
 
         private readonly ILogger _logger;
         private readonly IMediator _messagingMediator;
