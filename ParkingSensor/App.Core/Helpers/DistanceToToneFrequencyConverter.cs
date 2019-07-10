@@ -8,11 +8,11 @@ namespace App.Core
         private static readonly IDictionary<Tone, double> _toneFrequencies = new Dictionary<Tone, double>
         {
             [Tone.None] = 0,
-            [Tone.Lowest] = 404,
-            [Tone.Low] = 504,
-            [Tone.Medium] = 604,
-            [Tone.Higher] = 704,
-            [Tone.Highest] = 804
+            [Tone.Lowest] = 800,
+            [Tone.Low] = 1000,
+            [Tone.Medium] = 1200,
+            [Tone.Higher] = 1400,
+            [Tone.Highest] = 1600
         };
 
         private static double GetFrequency(Tone tone)

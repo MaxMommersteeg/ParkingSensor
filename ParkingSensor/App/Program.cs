@@ -28,7 +28,7 @@ namespace App
             RegisterServices();
 
             var messagingMediator = _serviceProvider.GetService<IMediator>();
-            await messagingMediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(5)));
+            await messagingMediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(1)));
 
             Console.ReadKey();
 
