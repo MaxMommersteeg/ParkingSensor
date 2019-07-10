@@ -1,19 +1,18 @@
 trigger:
 - master
 
-variables:
-  buildConfiguration: Release
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  runtimes: [ 'win10-x64', 'linux-arm']
-
 strategy:
   matrix:
     Windows:
       imageName: 'windows-2019'
-      runtime: ${{ each runtime in variables.runtimes }}
+      runtime: ['win10-x64', 'linux-arm']
 
 pool:
   vmImage: $(imageName)
+
+variables:
+  buildConfiguration: Release
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 steps:
 - task: UseDotNet@2
