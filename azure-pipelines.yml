@@ -1,10 +1,14 @@
+trigger:
+- master
+
+parameters:
+  runtimes: [ 'win10-x64', 'linux-arm']
+
 strategy:
   matrix:
     Windows:
       imageName: 'windows-2019'
-
-trigger:
-- master
+      runtime: ${{ each runtime in parameters.runtimes }}
 
 pool:
   vmImage: $(imageName)
