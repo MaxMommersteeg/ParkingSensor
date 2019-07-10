@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PublishReadyToRun>True</PublishReadyToRun>
     <PublishTrimmed>True</PublishTrimmed>
   </PropertyGroup>
 

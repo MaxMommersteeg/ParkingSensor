@@ -3,9 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PublishReadyToRun>True</PublishReadyToRun>
+    <RuntimeIdentifiers>win10-x64;linux-arm</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <PublishTrimmed>True</PublishTrimmed>
-    <RuntimeIdentifiers>win7-x64;linux-arm</RuntimeIdentifiers>
+    <PublishSingleFile>True</PublishSingleFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,8 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
+    <None Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
   </ItemGroup>
 
