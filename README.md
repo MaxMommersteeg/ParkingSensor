@@ -29,6 +29,8 @@ Continu under the heading that is right for you.
 
 ### TBD 
 
+Getting started will be finished in a few days...
+
 ## About
 
 ### Why
