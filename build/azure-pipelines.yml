@@ -36,3 +36,8 @@ steps:
     projects: 'ParkingSensor.sln'
     arguments: '--configuration $(buildConfiguration)'
     nobuild: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: drop1
