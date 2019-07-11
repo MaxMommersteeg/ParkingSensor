@@ -60,15 +60,3 @@ steps:
     projects: 'ParkingSensor.sln'
     arguments: '--configuration $(buildConfiguration)'
     nobuild: true
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet publish'
-  inputs:
-    command: publish
-    projects: 'App/App.csproj'
-    arguments: '--configuration $(buildConfiguration) --runtime $(runtime) --output $(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: drop1
