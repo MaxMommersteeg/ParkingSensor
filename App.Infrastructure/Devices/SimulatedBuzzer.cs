@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using App.Core.Devices;
 
 namespace App.Infrastructure.Devices
@@ -11,7 +12,7 @@ namespace App.Infrastructure.Devices
 
         public void PlayTone(double frequency, TimeSpan duration)
         {
-            Console.Beep(GetValueOrDefaultFrequency(frequency), Convert.ToInt32(duration.TotalMilliseconds));
+            Task.Run(() => Console.Beep(GetValueOrDefaultFrequency(frequency), Convert.ToInt32(duration.TotalMilliseconds)));
         }
 
         public void StartPlaying(double frequency)
