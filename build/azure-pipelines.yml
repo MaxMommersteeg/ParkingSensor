@@ -3,9 +3,33 @@ trigger:
 
 strategy:
   matrix:
-    Windows:
+    Windows_win10_x64:
       imageName: 'windows-2019'
       runtime: 'win10-x64'
+    Windows_linux_arm:
+      imageName: 'windows-2019'
+      runtime: 'linux-arm'
+    Windows_osx_x64:
+      imageName: 'windows-2019'
+      runtime: 'osx-x64'
+    Linux_win10_x64:
+      imageName: 'ubuntu-16.04'
+      runtime: 'win10-x64'
+    Linux_linux_arm:
+      imageName: 'ubuntu-16.04'
+      runtime: 'linux-arm'
+    Linux_osx_x64:
+      imageName: 'ubuntu-16.04'
+      runtime: 'osx-x64'
+    macOS_win10_x64:
+      imageName: 'macos-10.14'
+      runtime: 'win10-x64'
+    macOS_linux_arm:
+      imageName: 'macos-10.14'
+      runtime: 'linux-arm'
+    macOS_osx_x64:
+      imageName: 'macos-10.14'
+      runtime: 'osx-x64'
 
 pool:
   vmImage: $(imageName)
@@ -36,8 +60,3 @@ steps:
     projects: 'ParkingSensor.sln'
     arguments: '--configuration $(buildConfiguration)'
     nobuild: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: drop1
