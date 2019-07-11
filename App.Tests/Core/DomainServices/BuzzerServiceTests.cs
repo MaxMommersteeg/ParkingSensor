@@ -43,7 +43,7 @@ namespace App.Tests.Core.DomainServices
             await _sut.Handle(playTone, _defaultCancellationToken);
 
             // Assert
-            A.CallTo(() => _buzzer.PlayTone(_frequency, _duration))
+            A.CallTo(() => _buzzer.PlaySound(_frequency, _duration))
                 .MustHaveHappenedOnceExactly();
         }
 

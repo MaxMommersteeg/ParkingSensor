@@ -4,7 +4,7 @@ namespace App.Infrastructure.Devices
 {
     public class SimulatedMeasureSensor : IMeasureSensor
     {
-        private static readonly int[] _distances = new[] { 180, 160, 140, 120, 100, 80, 60 };
+        private static readonly int[] _distances = new[] { 150, 140, 130, 120, 110, 100, 90, 80, 70, 60 };
         private int _index = 0;
 
         public double GetDistance()

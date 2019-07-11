@@ -4,7 +4,7 @@ namespace App.Core.Devices
 {
     public interface IBuzzer : IDevice
     {
-        void PlayTone(double frequency, TimeSpan duration);
+        void PlaySoundEffect(double frequency, TimeSpan duration, int beeps);
 
         void StartPlaying(double frequency);
 

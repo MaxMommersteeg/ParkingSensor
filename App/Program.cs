@@ -28,7 +28,7 @@ namespace App
             RegisterServices();
 
             var messagingMediator = _serviceProvider.GetService<IMediator>();
-            await messagingMediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(1)));
+            await messagingMediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(3)));
 
             Console.ReadKey();
 
@@ -77,7 +77,7 @@ namespace App
                 return new Hcsr04Sensor(hcSr04Config.GetValue<int>("TriggerPin"), hcSr04Config.GetValue<int>("EchoPin"));
             });
 
-            collection.AddSingleton<IDistanceToToneFrequencyConverter, DistanceToToneFrequencyConverter>();
+            collection.AddSingleton<IDistanceToSoundEffectConverter, DistanceToSoundEffectConverter>();
             collection.AddScoped<IDistanceMeasurementService, DistanceMeasurementService>();
             collection.AddScoped<IBuzzerService, BuzzerService>();
             collection.AddScoped<IParkingSensorService, ParkingSensorService>();

@@ -10,9 +10,17 @@ namespace App.Infrastructure.Devices
         private const int MaxFrequency = 32767;
         private const int DefaultFrequency = 500;
 
-        public void PlayTone(double frequency, TimeSpan duration)
+        public void PlaySoundEffect(double frequency, TimeSpan duration, int beeps)
         {
-            Task.Run(() => Console.Beep(GetValueOrDefaultFrequency(frequency), Convert.ToInt32(duration.TotalMilliseconds)));
+            var toneDurationInMilliseconds = Convert.ToInt32(duration.TotalMilliseconds / beeps);
+
+            Task.Run(() => 
+            {
+                for (var i = 0; i < beeps; i++)
+                {
+                    Console.Beep(GetValueOrDefaultFrequency(frequency), toneDurationInMilliseconds);
+                }
+            });
         }
 
         public void StartPlaying(double frequency)

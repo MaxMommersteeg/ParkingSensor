@@ -5,7 +5,7 @@ using MediatR;
 namespace App.Core.DomainServices
 {
     public interface IBuzzerService :
-        IRequestHandler<PlayTone>,
+        IRequestHandler<PlaySoundEffect>,
         IDisposable
     {
     }

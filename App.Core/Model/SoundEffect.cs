@@ -1,17 +1,20 @@
 ﻿using System;
 
-namespace App.Core.Messages.Commands
+namespace App.Core.Model
 {
-    public class PlayTone : BaseCommand
+    public class SoundEffect
     {
-        public PlayTone(double frequency, TimeSpan duration)
+        public SoundEffect(double frequency, TimeSpan duration, int beeps)
         {
             Frequency = frequency;
             Duration = duration;
+            Beeps = beeps;
         }
 
         public double Frequency { get; }
 
         public TimeSpan Duration { get; }
+
+        public int Beeps { get; }
     }
 }

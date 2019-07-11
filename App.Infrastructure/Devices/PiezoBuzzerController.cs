@@ -16,9 +16,13 @@ namespace App.Infrastructure.Sensors
             _buzzer = new Buzzer(pinNumber, ForceSoftwarePWM);
         }
 
-        public void PlayTone(double frequency, TimeSpan duration)
+        public void PlaySoundEffect(double frequency, TimeSpan duration, int beeps)
         {
-            _buzzer.PlayTone(frequency, (int)duration.TotalSeconds);
+            var toneDurationInMilliseconds = Convert.ToInt32(duration.TotalMilliseconds / beeps);
+            for (var i = 0; i < beeps; i++)
+            {
+                _buzzer.PlayTone(frequency, toneDurationInMilliseconds);
+            }
         }
 
         public void StartPlaying(double frequency)
