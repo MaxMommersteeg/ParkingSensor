@@ -61,20 +61,6 @@ steps:
     arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
     nobuild: true
 
-- script: |
-    dotnet tool install -g dotnet-reportgenerator-globaltool
-    reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines;Cobertura
-  displayName: 'install dotnet tool dotnet-reportgenerator-globaltool'
-  condition: eq(variables['Agent.OS'], 'Windows_NT')
-
-- task: PublishCodeCoverageResults@1
-  displayName: 'publish code coverage report'
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
-    reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
-  condition: eq(variables['Agent.OS'], 'Windows_NT')
-
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop for master'
   inputs:
