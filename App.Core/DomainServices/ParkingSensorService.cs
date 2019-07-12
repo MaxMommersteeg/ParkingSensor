@@ -29,13 +29,17 @@ namespace App.Core.DomainServices
             _logger.LogDebug($"Received {distanceMeasured} event.");
 
             var soundEffect = _distanceToSoundEffectConverter.DistanceToSoundEffect(distanceMeasured.Distance);
-            if (soundEffect.Duration == TimeSpan.Zero || soundEffect.Beeps == 0)
+
+            IRequest command;
+            if (soundEffect == null)
             {
-                _logger.LogDebug($"Measured distance of {distanceMeasured.Distance}cm doesn't qualify for sound effect being played.");
-                return;
+                command = new StopSoundEffect();
+            }
+            else
+            {
+                command = new StartSoundEffect(soundEffect.Frequency);
             }
 
-            var command = new PlaySoundEffect(soundEffect.Frequency, soundEffect.Duration, soundEffect.Beeps);
             await _messagingMediator.Send(command);
 
             _logger.LogDebug($"Sent {command} command.");

@@ -21,13 +21,24 @@ namespace App.Core.DomainServices
             _buzzer = buzzer ?? throw new ArgumentNullException(nameof(buzzer));
         }
 
-        public Task<Unit> Handle(PlaySoundEffect request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(StartSoundEffect request, CancellationToken cancellationToken)
         {
             _logger.LogDebug($"Received {request} command.");
 
-            _buzzer.PlaySoundEffect(request.Frequency, request.Duration, request.Beeps);
+            _buzzer.StartPlaying(request.Frequency);
 
-            _logger.LogInformation($"Played tone.");
+            _logger.LogInformation($"Sent start playing request.");
+
+            return Unit.Task;
+        }
+
+        public Task<Unit> Handle(StopSoundEffect request, CancellationToken cancellationToken)
+        {
+            _logger.LogDebug($"Received {request} command.");
+
+            _buzzer.StopPlaying();
+
+            _logger.LogInformation($"Sent stop playing request.");
 
             return Unit.Task;
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using App.Core.Devices;
+﻿using App.Core.Devices;
 using Iot.Device.Buzzer;
 
 namespace App.Infrastructure.Sensors
@@ -11,28 +10,35 @@ namespace App.Infrastructure.Sensors
 
         private readonly Buzzer _buzzer;
 
+        private bool _isPlaying;
+        private double _currentFrequency;
+
         public PiezoBuzzerController(int pinNumber)
         {
             _buzzer = new Buzzer(pinNumber, ForceSoftwarePWM);
         }
 
-        public void PlaySoundEffect(double frequency, TimeSpan duration, int beeps)
-        {
-            var toneDurationInMilliseconds = Convert.ToInt32(duration.TotalMilliseconds / beeps);
-            for (var i = 0; i < beeps; i++)
-            {
-                _buzzer.PlayTone(frequency, toneDurationInMilliseconds);
-            }
-        }
-
         public void StartPlaying(double frequency)
         {
+            if (frequency == _currentFrequency)
+            {
+                return;
+            }
+
             _buzzer.SetFrequency(frequency);
+            _currentFrequency = frequency;
+            _isPlaying = true;
         }
 
         public void StopPlaying()
         {
+            if (!_isPlaying)
+            {
+                return;
+            }
+
             _buzzer.StopPlaying();
+            _isPlaying = false;
         }
 
         public void Dispose()

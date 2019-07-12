@@ -1,5 +1,4 @@
 ﻿using App.Core.Model;
-using System;
 
 namespace App.Core
 {
@@ -9,40 +8,45 @@ namespace App.Core
         {
             if (distanceInCentimeters >= 140)
             {
-                return new SoundEffect(0, TimeSpan.Zero, 0);
+                return null;
             }
 
-            if (distanceInCentimeters >= 120 && distanceInCentimeters < 140)
+            if (distanceInCentimeters >= 130 && distanceInCentimeters < 140)
             {
-                return new SoundEffect(800, TimeSpan.FromSeconds(2), 1);
+                return new SoundEffect(600);
+            }
+
+            if (distanceInCentimeters >= 120 && distanceInCentimeters < 130)
+            {
+                return new SoundEffect(750);
             }
 
             if (distanceInCentimeters >= 110 && distanceInCentimeters < 120)
             {
-                return new SoundEffect(1000, TimeSpan.FromSeconds(2), 2);
+                return new SoundEffect(900);
             }
 
             if (distanceInCentimeters >= 100 && distanceInCentimeters < 110)
             {
-                return new SoundEffect(1200, TimeSpan.FromSeconds(2), 3);
+                return new SoundEffect(1050);
             }
 
             if (distanceInCentimeters >= 90 && distanceInCentimeters < 100)
             {
-                return new SoundEffect(1400, TimeSpan.FromSeconds(2), 4);
+                return new SoundEffect(1200);
             }
 
             if (distanceInCentimeters >= 80 && distanceInCentimeters < 90)
             {
-                return new SoundEffect(1400, TimeSpan.FromSeconds(2), 4);
+                return new SoundEffect(1350);
             }
 
             if (distanceInCentimeters >= 70 && distanceInCentimeters < 80)
             {
-                return new SoundEffect(1600, TimeSpan.FromSeconds(2), 5);
+                return new SoundEffect(1500);
             }
 
-            return new SoundEffect(1800, TimeSpan.FromSeconds(2), 6);
+            return new SoundEffect(1650);
         }
     }
 }
