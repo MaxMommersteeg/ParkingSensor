@@ -58,7 +58,7 @@ steps:
   inputs:
     command: test
     projects: 'ParkingSensor.sln'
-    arguments: '--configuration $(buildConfiguration)'
+    arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
     nobuild: true
 
 - script: |
