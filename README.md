@@ -23,7 +23,7 @@ Continu under the heading that is right for you.
 #### Simulated
 - Just your computer
 
-#### With sensors
+#### With sensor(s)
 - A Raspberry Pi
 - A HC-SR04 and/or Piezo Buzzer Controller
 - Jumper wires (female-female, male-female, male-male)
