@@ -60,3 +60,11 @@ steps:
     projects: 'ParkingSensor.sln'
     arguments: '--configuration $(buildConfiguration)'
     nobuild: true
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'publish code coverage report'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
+    reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
+  condition: eq(variables['Agent.OS'], 'Windows_NT')
