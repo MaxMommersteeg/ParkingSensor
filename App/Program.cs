@@ -19,6 +19,7 @@ namespace App
     public class Program
     {
         private static IServiceProvider _serviceProvider;
+        private static IConfiguration _configuration;
 
         public static async Task Main()
         {
@@ -27,8 +28,10 @@ namespace App
             // Setup dependency injection.
             RegisterServices();
 
+            var distanceMeasuringConfig = _configuration.GetSection("DistanceMeasuring");
+
             var messagingMediator = _serviceProvider.GetService<IMediator>();
-            await messagingMediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(3)));
+            await messagingMediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(distanceMeasuringConfig.GetValue<int>("IntervalInSeconds"))));
 
             Console.ReadKey();
 
@@ -42,18 +45,18 @@ namespace App
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-            var configuration = builder.Build();
+            _configuration = builder.Build();
 
             var collection = new ServiceCollection();
             collection.AddLogging(configure => {
                 configure.AddConsole();
-                configure.AddConfiguration(configuration.GetSection("Logging"));
+                configure.AddConfiguration(_configuration.GetSection("Logging"));
             });
 
             var coreAssembly = Assembly.GetAssembly(typeof(BaseEvent));
             collection.AddMediatR(coreAssembly);
 
-            var sensorsConfig = configuration.GetSection("Sensors");
+            var sensorsConfig = _configuration.GetSection("Sensors");
 
             collection.AddSingleton<IBuzzer>(x =>
             {

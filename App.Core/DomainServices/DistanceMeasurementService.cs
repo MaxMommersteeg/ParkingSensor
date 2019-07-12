@@ -57,6 +57,7 @@ namespace App.Core.DomainServices
 
         public void Dispose()
         {
+            _timer?.Dispose();
             _measureSensor?.Dispose();
         }
 
