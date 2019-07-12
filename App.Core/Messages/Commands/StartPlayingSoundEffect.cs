@@ -2,9 +2,9 @@
 
 namespace App.Core.Messages.Commands
 {
-    public class StartSoundEffect : BaseCommand
+    public class StartPlayingSoundEffect : BaseCommand
     {
-        public StartSoundEffect(double frequency)
+        public StartPlayingSoundEffect(double frequency)
         {
             Frequency = frequency;
         }

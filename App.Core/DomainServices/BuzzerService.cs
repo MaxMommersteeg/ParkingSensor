@@ -21,7 +21,7 @@ namespace App.Core.DomainServices
             _buzzer = buzzer ?? throw new ArgumentNullException(nameof(buzzer));
         }
 
-        public Task<Unit> Handle(StartSoundEffect request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(StartPlayingSoundEffect request, CancellationToken cancellationToken)
         {
             _logger.LogDebug($"Received {request} command.");
 
@@ -32,7 +32,7 @@ namespace App.Core.DomainServices
             return Unit.Task;
         }
 
-        public Task<Unit> Handle(StopSoundEffect request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(StopPlayingSoundEffect request, CancellationToken cancellationToken)
         {
             _logger.LogDebug($"Received {request} command.");
 

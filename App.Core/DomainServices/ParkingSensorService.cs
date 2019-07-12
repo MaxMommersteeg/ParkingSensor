@@ -33,11 +33,11 @@ namespace App.Core.DomainServices
             IRequest command;
             if (soundEffect == null)
             {
-                command = new StopSoundEffect();
+                command = new StopPlayingSoundEffect();
             }
             else
             {
-                command = new StartSoundEffect(soundEffect.Frequency);
+                command = new StartPlayingSoundEffect(soundEffect.Frequency);
             }
 
             await _messagingMediator.Send(command);

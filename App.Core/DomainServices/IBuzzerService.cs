@@ -5,8 +5,8 @@ using MediatR;
 namespace App.Core.DomainServices
 {
     public interface IBuzzerService :
-        IRequestHandler<StartSoundEffect>,
-        IRequestHandler<StopSoundEffect>,
+        IRequestHandler<StartPlayingSoundEffect>,
+        IRequestHandler<StopPlayingSoundEffect>,
         IDisposable
     {
     }

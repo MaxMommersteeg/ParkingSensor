@@ -18,7 +18,6 @@ namespace App.Tests.Core.DomainServices
         private BuzzerService _sut;
 
         private double _frequency;
-        private TimeSpan _duration;
         private CancellationToken _defaultCancellationToken;
 
         [TestInitialize]
@@ -28,22 +27,35 @@ namespace App.Tests.Core.DomainServices
             _buzzer = A.Fake<IBuzzer>();
             _sut = new BuzzerService(_logger, _buzzer);
 
-            _frequency = 15;
-            _duration = TimeSpan.FromSeconds(1);
+            _frequency = 15; 
             _defaultCancellationToken = CancellationToken.None;
         }
 
         [TestMethod]
-        public async Task Handle_PlayTone_plays_tone()
+        public async Task Handle_StartPlayingSoundEffect_starts_playing_sound_effect()
         {
             // Arrange
-            var playTone = new PlayTone(_frequency, _duration);
+            var command = new StartPlayingSoundEffect(_frequency);
 
             // Act
-            await _sut.Handle(playTone, _defaultCancellationToken);
+            await _sut.Handle(command, _defaultCancellationToken);
 
             // Assert
-            A.CallTo(() => _buzzer.PlaySound(_frequency, _duration))
+            A.CallTo(() => _buzzer.StartPlaying(_frequency))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [TestMethod]
+        public async Task Handle_StopPlayingSoundEffect_stops_playing_sound_effect()
+        {
+            // Arrange
+            var command = new StopPlayingSoundEffect();
+
+            // Act
+            await _sut.Handle(command, _defaultCancellationToken);
+
+            // Assert
+            A.CallTo(() => _buzzer.StopPlaying())
                 .MustHaveHappenedOnceExactly();
         }
 
