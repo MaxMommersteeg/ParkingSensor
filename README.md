@@ -1,3 +1,5 @@
+<p align="center"><a href="https://github.com/MaxMommersteeg/ParkingSensor" rel="nofollow"><img src="https://github.com/MaxMommersteeg/ParkingSensor/blob/master/content/setup_300x225.png"></a></p>
+
 [![Build Status](https://maxmommersteeg.visualstudio.com/ParkingSensor/_apis/build/status/MaxMommersteeg.ParkingSensor?branchName=master)](https://maxmommersteeg.visualstudio.com/ParkingSensor/_build/latest?definitionId=4&branchName=master)
 
 # ParkingSensor
