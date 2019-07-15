@@ -6,7 +6,7 @@
 
 ## Disclaimer
 
-> **WARNING**: Never ever use code from this repository to build **AND** actually use the parking sensor on public roads.
+> **WARNING**: Never ever use code from this repository to build **AND** actually use on public roads.
 
 ## Getting started (not finished)
 
