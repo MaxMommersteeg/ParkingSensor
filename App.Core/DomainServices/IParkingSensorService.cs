@@ -3,7 +3,7 @@ using MediatR;
 
 namespace App.Core.DomainServices
 {
-    public interface IParkingSensorService : 
+    public interface IParkingSensorService :
         INotificationHandler<DistanceMeasured>
     {
     }

@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace App
 {
-    public class Program
+    public static class Program
     {
         private static IServiceProvider _serviceProvider;
         private static IConfiguration _configuration;
@@ -49,7 +49,8 @@ namespace App
             _configuration = builder.Build();
 
             var collection = new ServiceCollection();
-            collection.AddLogging(configure => {
+            collection.AddLogging(configure =>
+            {
                 configure.AddConsole();
                 configure.AddConfiguration(_configuration.GetSection("Logging"));
             });
@@ -87,7 +88,7 @@ namespace App
             collection.AddScoped<IParkingSensorService, ParkingSensorService>();
 
             _serviceProvider = collection.BuildServiceProvider();
-        }        
+        }
 
         private static void DisposeServices()
         {
@@ -96,11 +97,10 @@ namespace App
                 return;
             }
 
-            if (_serviceProvider is IDisposable)
+            if (_serviceProvider is IDisposable disposable)
             {
-                ((IDisposable)_serviceProvider).Dispose();
+                disposable.Dispose();
             }
         }
     }
 }
-;

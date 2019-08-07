@@ -16,6 +16,10 @@ namespace App.Infrastructure.Devices
             return distance;
         }
 
+        public void Dispose()
+        {
+        }
+
         private void UpdateIndex()
         {
             if (_index == _distances.Length - 1)
@@ -26,10 +30,6 @@ namespace App.Infrastructure.Devices
             {
                 _index++;
             }
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

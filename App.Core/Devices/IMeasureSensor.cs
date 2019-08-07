@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace App.Core.Devices
+﻿namespace App.Core.Devices
 {
-    public interface IMeasureSensor: IDevice
+    public interface IMeasureSensor : IDevice
     {
         double GetDistance();
     }

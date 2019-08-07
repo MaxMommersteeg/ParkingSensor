@@ -33,7 +33,7 @@ namespace App.Tests.Core.DomainServices
             _sut = new ParkingSensorService(_logger, _messagingMediator, _distanceToSoundEffectConverter);
 
             _distance = 15;
-            _frequency = 505; 
+            _frequency = 505;
             _defaultCancellationToken = CancellationToken.None;
         }
 

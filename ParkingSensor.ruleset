@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for ParkingSensor" Description="Code analysis rules for ParkingSensor.sln" ToolsVersion="16.0">
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA0001" Action="None" />
+    <Rule Id="SA1008" Action="None" />
+    <Rule Id="SA1009" Action="None" />
+    <Rule Id="SA1101" Action="None" />
+    <Rule Id="SA1124" Action="None" />
+    <Rule Id="SA1200" Action="None" />
+    <Rule Id="SA1300" Action="None" />
+    <Rule Id="SA1309" Action="None" />
+    <Rule Id="SA1312" Action="None" />
+    <Rule Id="SA1413" Action="None" />
+    <Rule Id="SA1600" Action="None" />
+    <Rule Id="SA1602" Action="None" />
+    <Rule Id="SA1611" Action="None" />
+    <Rule Id="SA1615" Action="None" />
+    <Rule Id="SA1633" Action="None" />
+    <Rule Id="SA1634" Action="None" />
+    <Rule Id="SA1635" Action="None" />
+    <Rule Id="SA1636" Action="None" />
+    <Rule Id="SA1637" Action="None" />
+    <Rule Id="SA1638" Action="None" />
+    <Rule Id="SA1640" Action="None" />
+    <Rule Id="SA1641" Action="None" />
+    <Rule Id="SA1642" Action="None" />
+    <Rule Id="SA1643" Action="None" />
+    <Rule Id="SA1648" Action="None" />
+    <Rule Id="SA1652" Action="None" />
+    <Rule Id="SX1101" Action="Warning" />
+    <Rule Id="SX1309" Action="Warning" />
+    <Rule Id="SA1118" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Roslynator.CodeFixes" RuleNamespace="Rolsynator.CodeFixes">
+    <Rule Id="RCS1021" Action="None" />
+    <Rule Id="RCS1080" Action="None" />
+    <Rule Id="RCS1090" Action="None" />
+    <Rule Id="RCS1093" Action="None" />
+    <Rule Id="RCS1118" Action="None" />
+    <Rule Id="RCS1124" Action="None" />
+    <Rule Id="RCS1163" Action="None" />
+    <Rule Id="RCS1170" Action="None" />
+    <Rule Id="RCS1192" Action="None" />
+    <Rule Id="RCS1194" Action="None" />
+    <Rule Id="RCS1212" Action="None" />
+    <Rule Id="RCS1221" Action="None" />
+  </Rules>
+</RuleSet>

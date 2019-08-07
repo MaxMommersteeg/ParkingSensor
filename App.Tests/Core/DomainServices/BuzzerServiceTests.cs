@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using App.Core.Devices;
 using App.Core.DomainServices;
@@ -27,7 +26,7 @@ namespace App.Tests.Core.DomainServices
             _buzzer = A.Fake<IBuzzer>();
             _sut = new BuzzerService(_logger, _buzzer);
 
-            _frequency = 15; 
+            _frequency = 15;
             _defaultCancellationToken = CancellationToken.None;
         }
 
