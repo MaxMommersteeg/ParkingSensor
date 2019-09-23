@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IoT.Device.Bindings" Version="0.1.0-prerelease.19171.3" />
+    <PackageReference Include="IoT.Device.Bindings" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

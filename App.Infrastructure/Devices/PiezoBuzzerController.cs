@@ -25,7 +25,7 @@ namespace App.Infrastructure.Sensors
                 return;
             }
 
-            _buzzer.SetFrequency(frequency);
+            _buzzer.StartPlaying(frequency);
             _currentFrequency = frequency;
             _isPlaying = true;
         }
