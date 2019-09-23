@@ -33,8 +33,6 @@ namespace App.Core.DomainServices
 
         public Task<Unit> Handle(StartDistanceMeasurement request, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"Received {request} command.");
-
             Started = true;
             _timer = new Timer(OnIntervalElapsed, null, TimeSpan.Zero, GetValueOrMinimalInterval(request.MeasureInterval));
 
@@ -45,8 +43,6 @@ namespace App.Core.DomainServices
 
         public Task<Unit> Handle(StopDistanceMeasurement request, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"Received {request} command.");
-
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
             Started = false;
 

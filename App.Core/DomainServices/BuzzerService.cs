@@ -23,22 +23,18 @@ namespace App.Core.DomainServices
 
         public Task<Unit> Handle(StartPlayingSoundEffect request, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"Received {request} command.");
-
             _buzzer.StartPlaying(request.Frequency);
 
-            _logger.LogInformation($"Sent start playing request.");
+            _logger.LogInformation("Sent start playing request.");
 
             return Unit.Task;
         }
 
         public Task<Unit> Handle(StopPlayingSoundEffect request, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"Received {request} command.");
-
             _buzzer.StopPlaying();
 
-            _logger.LogInformation($"Sent stop playing request.");
+            _logger.LogInformation("Sent stop playing request.");
 
             return Unit.Task;
         }

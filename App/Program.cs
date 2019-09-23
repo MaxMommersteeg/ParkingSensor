@@ -7,6 +7,7 @@ using App.Core.Devices;
 using App.Core.DomainServices;
 using App.Core.Messages.Commands;
 using App.Core.Messages.Events;
+using App.Core.PipelineBehaviors;
 using App.Infrastructure.Devices;
 using App.Infrastructure.Sensors;
 using MediatR;
@@ -57,6 +58,7 @@ namespace App
 
             var coreAssembly = Assembly.GetAssembly(typeof(BaseEvent));
             collection.AddMediatR(coreAssembly);
+            collection.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             var sensorsConfig = _configuration.GetSection("Sensors");
 
