@@ -14,18 +14,18 @@ namespace App.Core.DomainServices
         private static readonly TimeSpan MinimalInterval = TimeSpan.FromMilliseconds(60);
 
         private readonly ILogger _logger;
-        private readonly IMediator _messagingMediator;
+        private readonly IMediator _mediator;
         private readonly IMeasureSensor _measureSensor;
 
         private Timer _timer;
 
         public DistanceMeasurementService(
             ILogger<DistanceMeasurementService> logger,
-            IMediator messagingMediator,
+            IMediator mediator,
             IMeasureSensor measureSensor)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _messagingMediator = messagingMediator ?? throw new ArgumentNullException(nameof(messagingMediator));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _measureSensor = measureSensor ?? throw new ArgumentNullException(nameof(measureSensor));
         }
 
@@ -64,7 +64,7 @@ namespace App.Core.DomainServices
             _logger.LogInformation($"Measured distance. {distance}cm");
 
             var @event = new DistanceMeasured(distance);
-            Task.Run(async() => await _messagingMediator.Publish(@event));
+            Task.Run(async() => await _mediator.Publish(@event));
 
             _logger.LogDebug($"Published {@event} event.");
         }

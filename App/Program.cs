@@ -31,8 +31,9 @@ namespace App
 
             var distanceMeasuringConfig = _configuration.GetSection("DistanceMeasuring");
 
-            var messagingMediator = _serviceProvider.GetService<IMediator>();
-            await messagingMediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(distanceMeasuringConfig.GetValue<int>("IntervalInSeconds"))));
+            var mediator = _serviceProvider.GetService<IMediator>();
+            await mediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(distanceMeasuringConfig.GetValue<int>("IntervalInSeconds"))));
+            await mediator.Send(new StartMotionDetection());
 
             Console.ReadKey();
 
@@ -84,8 +85,21 @@ namespace App
                 return new Hcsr04Sensor(hcSr04Config.GetValue<int>("TriggerPin"), hcSr04Config.GetValue<int>("EchoPin"));
             });
 
+            collection.AddSingleton<IMotionDetectionSensor>(x =>
+            {
+                var hcSr501Config = sensorsConfig.GetSection("HcSr501");
+                if (hcSr501Config.GetValue("UseDummy", defaultValue: false))
+                {
+                    return new DummyMotionDetectionSensor();
+                }
+
+                var mediator = _serviceProvider.GetService<IMediator>();
+                return new Hcsr501Sensor(mediator, hcSr501Config.GetValue<int>("OutPin"));
+            });
+
             collection.AddSingleton<IDistanceToSoundEffectConverter, DistanceToSoundEffectConverter>();
             collection.AddScoped<IDistanceMeasurementService, DistanceMeasurementService>();
+            collection.AddScoped<IMotionDetectionService, MotionDetectionService>();
             collection.AddScoped<IBuzzerService, BuzzerService>();
             collection.AddScoped<IParkingSensorService, ParkingSensorService>();
 

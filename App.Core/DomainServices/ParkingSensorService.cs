@@ -11,16 +11,16 @@ namespace App.Core.DomainServices
     public class ParkingSensorService : IParkingSensorService
     {
         private readonly ILogger _logger;
-        private readonly IMediator _messagingMediator;
+        private readonly IMediator _mediator;
         private readonly IDistanceToSoundEffectConverter _distanceToSoundEffectConverter;
 
         public ParkingSensorService(
             ILogger<ParkingSensorService> logger,
-            IMediator messagingMediator,
+            IMediator mediator,
             IDistanceToSoundEffectConverter distanceToSoundEffectConverter)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _messagingMediator = messagingMediator ?? throw new ArgumentNullException(nameof(messagingMediator));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _distanceToSoundEffectConverter = distanceToSoundEffectConverter ?? throw new ArgumentNullException(nameof(distanceToSoundEffectConverter));
         }
 
@@ -40,7 +40,7 @@ namespace App.Core.DomainServices
                 command = new StartPlayingSoundEffect(soundEffect.Frequency);
             }
 
-            await _messagingMediator.Send(command);
+            await _mediator.Send(command);
 
             _logger.LogDebug($"Sent {command} command.");
         }
