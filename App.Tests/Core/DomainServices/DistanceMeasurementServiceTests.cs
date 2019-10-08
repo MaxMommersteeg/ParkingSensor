@@ -15,7 +15,7 @@ namespace App.Tests.Core.DomainServices
     public class DistanceMeasurementServiceTests
     {
         private ILogger<DistanceMeasurementService> _logger;
-        private IMediator _messagingMediator;
+        private IMediator _mediator;
         private IMeasureSensor _measureSensor;
         private DistanceMeasurementService _sut;
 
@@ -26,9 +26,9 @@ namespace App.Tests.Core.DomainServices
         public void Initialize()
         {
             _logger = A.Fake<ILogger<DistanceMeasurementService>>();
-            _messagingMediator = A.Fake<IMediator>();
+            _mediator = A.Fake<IMediator>();
             _measureSensor = A.Fake<IMeasureSensor>();
-            _sut = new DistanceMeasurementService(_logger, _messagingMediator, _measureSensor);
+            _sut = new DistanceMeasurementService(_logger, _mediator, _measureSensor);
 
             _measureInterval = TimeSpan.FromSeconds(1);
             _defaultCancellationToken = CancellationToken.None;
