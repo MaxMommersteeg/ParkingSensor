@@ -32,8 +32,11 @@ namespace App
             var distanceMeasuringConfig = _configuration.GetSection("DistanceMeasuring");
 
             var mediator = _serviceProvider.GetService<IMediator>();
-            await mediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(distanceMeasuringConfig.GetValue<int>("IntervalInSeconds"))));
-            await mediator.Send(new StartMotionDetection());
+
+            var startDistanceMeasurement = mediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(distanceMeasuringConfig.GetValue<int>("IntervalInSeconds"))));
+            var startMotionDetection = mediator.Send(new StartMotionDetection());
+
+            await Task.WhenAll(startDistanceMeasurement, startMotionDetection);
 
             Console.ReadKey();
 

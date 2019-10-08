@@ -20,7 +20,7 @@ namespace App.Infrastructure.Sensors
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-            _sensor = new Hcsr501(outPin);
+            _sensor = new Hcsr501(outPin, PinNumberingScheme.Board);
             _sensor.Hcsr501ValueChanged += Sensor_Hcsr501ValueChanged;
         }
 
