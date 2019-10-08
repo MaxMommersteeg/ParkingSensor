@@ -16,7 +16,7 @@ namespace App.Tests.Core.DomainServices
     public class ParkingSensorServiceTests
     {
         private ILogger<ParkingSensorService> _logger;
-        private IMediator _messagingMediator;
+        private IMediator _mediator;
         private IDistanceToSoundEffectConverter _distanceToSoundEffectConverter;
         private ParkingSensorService _sut;
 
@@ -28,9 +28,9 @@ namespace App.Tests.Core.DomainServices
         public void Initialize()
         {
             _logger = A.Fake<ILogger<ParkingSensorService>>();
-            _messagingMediator = A.Fake<IMediator>();
+            _mediator = A.Fake<IMediator>();
             _distanceToSoundEffectConverter = A.Fake<IDistanceToSoundEffectConverter>();
-            _sut = new ParkingSensorService(_logger, _messagingMediator, _distanceToSoundEffectConverter);
+            _sut = new ParkingSensorService(_logger, _mediator, _distanceToSoundEffectConverter);
 
             _distance = 15;
             _frequency = 505;
@@ -49,7 +49,7 @@ namespace App.Tests.Core.DomainServices
             await _sut.Handle(distanceMeasured, _defaultCancellationToken);
 
             // Assert
-            A.CallTo(() => _messagingMediator.Send(A<StartPlayingSoundEffect>.That.Matches(x => x.Frequency == _frequency), A<CancellationToken>._))
+            A.CallTo(() => _mediator.Send(A<StartPlayingSoundEffect>.That.Matches(x => x.Frequency == _frequency), A<CancellationToken>._))
                 .MustHaveHappenedOnceExactly();
         }
 
@@ -65,7 +65,7 @@ namespace App.Tests.Core.DomainServices
             await _sut.Handle(distanceMeasured, _defaultCancellationToken);
 
             // Assert
-            A.CallTo(() => _messagingMediator.Send(A<StopPlayingSoundEffect>._, A<CancellationToken>._))
+            A.CallTo(() => _mediator.Send(A<StopPlayingSoundEffect>._, A<CancellationToken>._))
                 .MustHaveHappenedOnceExactly();
         }
     }
