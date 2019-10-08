@@ -19,7 +19,6 @@ namespace App.Tests.Core.DomainServices
         private IMotionDetectionSensor _motionDetectionSensor;
         private MotionDetectionService _sut;
 
-        private double _frequency;
         private CancellationToken _defaultCancellationToken;
 
         [TestInitialize]
