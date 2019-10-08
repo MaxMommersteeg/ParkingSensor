@@ -29,7 +29,6 @@ namespace App.Tests.Core.DomainServices
             _motionDetectionSensor = A.Fake<IMotionDetectionSensor>();
             _sut = new MotionDetectionService(_logger, _mediator, _motionDetectionSensor);
 
-            _frequency = 505;
             _defaultCancellationToken = CancellationToken.None;
         }
 
