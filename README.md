@@ -25,7 +25,7 @@ Continu under the heading that is right for you.
 
 #### With sensor(s)
 - A Raspberry Pi
-- A HC-SR04 and/or Piezo Buzzer Controller
+- A HC-SR04, HC-SR501 and/or Piezo Buzzer Controller
 - Jumper wires (female-female, male-female, male-male)
 - (optional) breadboard (for (attempting) to keep the wiring organized)
 
@@ -39,10 +39,10 @@ Getting started will be finished in a few days...
 
 This project is merely created for playing around with several cool techniques. To name a few:
 - Clean Architecture
-- MediatR
+- MediatR (mediator pattern implementation for in-process communication)
 - Azure pipelines (yaml)
 - .NET Core self-contained deployments (apps that ship their own runtime)
-- Single file applications (convienient for end users)
+- Single file applications (convienient single file app for end users)
 - Assembly linking (reduced app size by trimming unused assemblies)
 
 Aside from above techniques the application also leverages: logging, configuration and dependency injection.
@@ -51,6 +51,7 @@ Aside from above techniques the application also leverages: logging, configurati
 
 Following sensors are currently supported and are working together:
  - [x] [HC-SR04 - Ultrasonic Ranging Module](https://github.com/dotnet/iot/tree/master/src/devices/Hcsr04) - For distance measurement
+ - [x] [HC-SR501 - PIR Motion Sensor](https://github.com/dotnet/iot/tree/master/src/devices/Hcsr501) - For motion detection
  - [x] [Buzzer - Piezo Buzzer Controller](https://github.com/dotnet/iot/tree/master/src/devices/Buzzer)- For sound effects
 
 ## Related projects
