@@ -1,11 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using App.Core;
 using App.Core.Devices;
 using App.Core.DomainServices;
 using App.Core.Messages.Commands;
 using App.Core.Messages.Events;
-using App.Core.Model;
 using FakeItEasy;
 using MediatR;
 using Microsoft.Extensions.Logging;
