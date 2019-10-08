@@ -46,9 +46,11 @@ namespace App.Tests.Core.DomainServices
         }
 
         [TestMethod]
-        public async Task Handle_MotionDetected_requests_a_played_sound_effect_being_stopped()
+        public async Task Handle_MotionDetected_requests_a_sound_effect_being_played()
         {
             // Arrange
+            A.CallTo(() => _sut.Started).Returns(true);
+
             var motionDetected = new MotionDetected();
 
             // Act
@@ -63,6 +65,8 @@ namespace App.Tests.Core.DomainServices
         public async Task Handle_MotionStopped_requests_a_played_sound_effect_being_stopped()
         {
             // Arrange
+            A.CallTo(() => _sut.Started).Returns(true);
+
             var motionStopped = new MotionStopped();
 
             // Act
