@@ -44,6 +44,7 @@ This project is merely created for playing around with several cool techniques. 
 - .NET Core self-contained deployments (apps that ship their own runtime)
 - Single file applications (convienient single file app for end users)
 - Assembly linking (reduced app size by trimming unused assemblies)
+- .NET Core service works for creating background services
 
 Aside from above techniques the application also leverages: logging, configuration and dependency injection.
 
