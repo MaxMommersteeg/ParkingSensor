@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using App.Core;
 using App.Core.Devices;
 using App.Core.DomainServices;
-using App.Core.Messages.Commands;
 using App.Core.Messages.Events;
 using App.Core.PipelineBehaviors;
 using App.Infrastructure.Devices;
@@ -13,6 +12,7 @@ using App.Infrastructure.Sensors;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace App
@@ -20,106 +20,81 @@ namespace App
     public static class Program
     {
         private static IServiceProvider _serviceProvider;
-        private static IConfiguration _configuration;
 
-        public static async Task Main()
+        public static Task Main(string[] args)
         {
-            Console.WriteLine("Started Parking Sensor app.");
-
-            // Setup dependency injection.
-            RegisterServices();
-
-            var distanceMeasuringConfig = _configuration.GetSection("DistanceMeasuring");
-
-            var mediator = _serviceProvider.GetService<IMediator>();
-
-            var startDistanceMeasurement = mediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(distanceMeasuringConfig.GetValue<int>("IntervalInSeconds"))));
-            var startMotionDetection = mediator.Send(new StartMotionDetection());
-
-            await Task.WhenAll(startDistanceMeasurement, startMotionDetection);
-
-            Console.ReadKey();
-
-            // Cleanup.
-            DisposeServices();
+            return CreateHostBuilder(args).Build().RunAsync();
         }
 
-        private static void RegisterServices()
+        public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
-
-            _configuration = builder.Build();
-
-            var collection = new ServiceCollection();
-            collection.AddLogging(configure =>
-            {
-                configure.AddConsole();
-                configure.AddConfiguration(_configuration.GetSection("Logging"));
-            });
-
-            var coreAssembly = Assembly.GetAssembly(typeof(BaseEvent));
-            collection.AddMediatR(coreAssembly);
-            collection.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-
-            var sensorsConfig = _configuration.GetSection("Sensors");
-
-            collection.AddSingleton<IBuzzer>(x =>
-            {
-                var piezoBuzzerConfig = sensorsConfig.GetSection("PiezoBuzzer");
-                if (piezoBuzzerConfig.GetValue("UseSimulated", defaultValue: false))
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureServices((hostContext, services) =>
                 {
-                    return new SimulatedBuzzer();
-                }
+                    services.AddHostedService<Worker>();
 
-                return new PiezoBuzzerController(piezoBuzzerConfig.GetValue<int>("PinNumber"));
-            });
+                    var builder = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                        .AddEnvironmentVariables();
 
-            collection.AddSingleton<IMeasureSensor>(x =>
-            {
-                var hcSr04Config = sensorsConfig.GetSection("HcSr04");
-                if (hcSr04Config.GetValue("UseSimulated", defaultValue: false))
-                {
-                    return new SimulatedMeasureSensor();
-                }
+                    var configuration = builder.Build();
 
-                return new Hcsr04Sensor(hcSr04Config.GetValue<int>("TriggerPin"), hcSr04Config.GetValue<int>("EchoPin"));
-            });
+                    var collection = new ServiceCollection();
+                    services.AddLogging(configure =>
+                    {
+                        configure.AddConsole();
+                        configure.AddConfiguration(configuration.GetSection("Logging"));
+                    });
 
-            collection.AddSingleton<IMotionDetectionSensor>(x =>
-            {
-                var hcSr501Config = sensorsConfig.GetSection("HcSr501");
-                if (hcSr501Config.GetValue("UseDummy", defaultValue: false))
-                {
-                    return new DummyMotionDetectionSensor();
-                }
+                    var coreAssembly = Assembly.GetAssembly(typeof(BaseEvent));
+                    services.AddMediatR(coreAssembly);
+                    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
-                var mediator = _serviceProvider.GetService<IMediator>();
-                return new Hcsr501Sensor(mediator, hcSr501Config.GetValue<int>("OutPin"));
-            });
+                    var sensorsConfig = configuration.GetSection("Sensors");
 
-            collection.AddSingleton<IDistanceToSoundEffectConverter, DistanceToSoundEffectConverter>();
-            collection.AddScoped<IDistanceMeasurementService, DistanceMeasurementService>();
-            collection.AddScoped<IMotionDetectionService, MotionDetectionService>();
-            collection.AddScoped<IBuzzerService, BuzzerService>();
-            collection.AddScoped<IParkingSensorService, ParkingSensorService>();
+                    services.AddSingleton<IBuzzer>(x =>
+                    {
+                        var piezoBuzzerConfig = sensorsConfig.GetSection("PiezoBuzzer");
+                        if (piezoBuzzerConfig.GetValue("UseSimulated", defaultValue: false))
+                        {
+                            return new SimulatedBuzzer();
+                        }
 
-            _serviceProvider = collection.BuildServiceProvider();
-        }
+                        return new PiezoBuzzerController(piezoBuzzerConfig.GetValue<int>("PinNumber"));
+                    });
 
-        private static void DisposeServices()
-        {
-            if (_serviceProvider == null)
-            {
-                return;
-            }
+                    services.AddSingleton<IMeasureSensor>(x =>
+                    {
+                        var hcSr04Config = sensorsConfig.GetSection("HcSr04");
+                        if (hcSr04Config.GetValue("UseSimulated", defaultValue: false))
+                        {
+                            return new SimulatedMeasureSensor();
+                        }
 
-            if (_serviceProvider is IDisposable disposable)
-            {
-                disposable.Dispose();
-            }
+                        return new Hcsr04Sensor(hcSr04Config.GetValue<int>("TriggerPin"), hcSr04Config.GetValue<int>("EchoPin"));
+                    });
+
+                    services.AddSingleton<IMotionDetectionSensor>(x =>
+                    {
+                        var hcSr501Config = sensorsConfig.GetSection("HcSr501");
+                        if (hcSr501Config.GetValue("UseDummy", defaultValue: false))
+                        {
+                            return new DummyMotionDetectionSensor();
+                        }
+
+                        var mediator = _serviceProvider.GetService<IMediator>();
+                        return new Hcsr501Sensor(mediator, hcSr501Config.GetValue<int>("OutPin"));
+                    });
+
+                    services.AddSingleton<IDistanceToSoundEffectConverter, DistanceToSoundEffectConverter>();
+                    services.AddScoped<IDistanceMeasurementService, DistanceMeasurementService>();
+                    services.AddScoped<IMotionDetectionService, MotionDetectionService>();
+                    services.AddScoped<IBuzzerService, BuzzerService>();
+                    services.AddScoped<IParkingSensorService, ParkingSensorService>();
+
+                    _serviceProvider = services.BuildServiceProvider();
+                });
         }
     }
 }
