@@ -49,7 +49,7 @@ namespace App.Tests.Core.DomainServices
         public async Task Handle_MotionDetected_requests_a_sound_effect_being_played()
         {
             // Arrange
-            A.CallTo(() => _sut.Started).Returns(true);
+            await _sut.Handle(new StartMotionDetection(), _defaultCancellationToken);
 
             var motionDetected = new MotionDetected();
 
@@ -65,7 +65,7 @@ namespace App.Tests.Core.DomainServices
         public async Task Handle_MotionStopped_requests_a_played_sound_effect_being_stopped()
         {
             // Arrange
-            A.CallTo(() => _sut.Started).Returns(true);
+            await _sut.Handle(new StartMotionDetection(), _defaultCancellationToken);
 
             var motionStopped = new MotionStopped();
 
