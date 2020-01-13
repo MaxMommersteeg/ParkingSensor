@@ -21,14 +21,14 @@ namespace App
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Started Parking Sensor background service.");
 
             var startDistanceMeasurement = _mediator.Send(new StartDistanceMeasurement(TimeSpan.FromSeconds(1)));
             var startMotionDetection = _mediator.Send(new StartMotionDetection());
 
-            await Task.WhenAll(startDistanceMeasurement, startMotionDetection);
+            return Task.WhenAll(startDistanceMeasurement, startMotionDetection);
         }
     }
 }
